@@ -3,8 +3,15 @@ const app =express();
 const cors=require('cors')
 const chats = require('./data/data')
 const dotenv=require('dotenv');
-app.use(cors());
+const connectdb =require("./config/db");
+const userRoutes= require("./routes/userRoutes")
 dotenv.config();
+
+connectdb();
+app.use(cors());
+app.use(express.json())
+app.use("/api/user",userRoutes);
+
 app.get("/",(req,res)=>{
     res.send("Hello");
 })
@@ -13,6 +20,7 @@ app.get("/api/chats",(req,res)=>{
     
     res.send(chats);
 })
+
 
 app.get("/api/chats/:id",(req,res)=>{
     const id = req.params.id;
