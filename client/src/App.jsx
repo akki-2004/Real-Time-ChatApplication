@@ -13,10 +13,13 @@ function App() {
     <>
       {/* <h1>Heelo From CLient</h1>
        */}
+       <div className='App'>
+
        <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/chats' element={<Chats/>}/>
        </Routes>
+       </div>
     </>
   )
 }
