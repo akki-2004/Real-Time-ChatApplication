@@ -2,8 +2,8 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, V
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Don't forget to import axios
-import im2 from "./hide.png";
-import im1 from "./images.png";
+import im2 from "../Images/hide.png";
+import im1 from "../Images/images.png";
 
 export default function Login() {
     const [show, setShow] = useState(false);
@@ -23,7 +23,7 @@ export default function Login() {
                 status: "warning",
                 duration: 5000,
                 isClosable: true,
-                position: "bottom",
+                position: "top",
             });
             setLoading(false);
             return;
@@ -40,7 +40,7 @@ export default function Login() {
                 status: "success",
                 duration: 5000,
                 isClosable: true,
-                position: "bottom",
+                position: "top",
             });
             localStorage.setItem("userInfo", JSON.stringify(data));
             setLoading(false);
@@ -54,7 +54,7 @@ export default function Login() {
                 status: "error",
                 duration: 5000,
                 isClosable: true,
-                position: "bottom",
+                position: "top",
             });
         }
     };

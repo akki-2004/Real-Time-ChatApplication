@@ -2,8 +2,8 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, V
 import React, { useState } from 'react';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import im2 from "./hide.png";
-import im1 from "./images.png";
+import im2 from "../Images/hide.png";
+import im1 from "../Images/images.png";
 
 export default function SignUp() {
     const [name, setName] = useState('');
@@ -34,7 +34,7 @@ export default function SignUp() {
                 status: 'warning',
                 duration: 5000,
                 isClosable: true,
-                position: 'bottom',
+                position: 'top',
             });
             setLoading(false);
             return;
@@ -46,7 +46,7 @@ export default function SignUp() {
                 status: 'warning',
                 duration: 5000,
                 isClosable: true,
-                position: 'bottom',
+                position: 'top',
             });
             setLoading(false);
             return;
@@ -63,7 +63,7 @@ export default function SignUp() {
                     status: 'success',
                     duration: 5000,
                     isClosable: true,
-                    position: 'bottom',
+                    position: 'top',
                 });
                 localStorage.setItem('userInfo', JSON.stringify(response.data));
                 history('/chats');
@@ -78,7 +78,7 @@ export default function SignUp() {
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
-                position: 'bottom',
+                position: 'top',
             });
         } finally {
             setLoading(false);
