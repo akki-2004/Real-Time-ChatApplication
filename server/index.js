@@ -5,13 +5,14 @@ const chats = require('./data/data')
 const dotenv=require('dotenv');
 const connectdb =require("./config/db");
 const userRoutes= require("./routes/userRoutes")
+const chatRoutes= require("./routes/chatRoutes")
 dotenv.config();
 
 connectdb();
 app.use(cors());
 app.use(express.json())
 app.use("/api/user",userRoutes);
-
+app.use("/api/chat",chatRoutes);
 app.get("/",(req,res)=>{
     res.send("Hello");
 })
