@@ -28,11 +28,12 @@ export default function SideBar() {
     const config = {
       headers:{
       "Content-type": "application/json",
-      Authorization: `Bearer $[user.token}`
+      Authorization: `Bearer ${user.token}`
       },};
 
       const {respone}=await axios.post("http://localhost:3924/api/chat",{userId},config);
-      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+      // console.log(respone);
+      // if (!chats.find((c) => c._id === respone.id)) setChats([respone, ...chats]);
       setLoadingChat(false);
       setSelectedChat(respone);
    } catch (error) {
@@ -129,7 +130,7 @@ export default function SideBar() {
       </Box>
 
 
-      <Box d={"flex"} pb={2}>
+      <Box d={"flex"} pb={2} width={'50%'}>
       <Input
 placeholder="Search by name or email"
 mr={2}
@@ -142,7 +143,7 @@ onChange={(e) =>setSearch(e.target.value)}/>
       {loading ? (
         <ChatLoading />
       ) : (
-        searchResult.length > 0 && // Ensure searchResult is not empty
+        searchResult.length > 0 && 
         searchResult.map((user) => (
           <UserListItem
             key={user._id}
