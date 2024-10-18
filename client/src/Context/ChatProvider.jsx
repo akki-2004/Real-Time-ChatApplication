@@ -17,7 +17,6 @@ const ChatProvider = ({ children }) => {
     setUser(userInfo);
 
     if (!userInfo) history("/");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
 
   return (
