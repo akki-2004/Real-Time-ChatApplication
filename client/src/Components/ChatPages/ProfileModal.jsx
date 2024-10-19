@@ -1,47 +1,67 @@
-import { ViewIcon } from '@chakra-ui/icons';
-import { Button, IconButton, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
+import { ViewIcon } from "@chakra-ui/icons";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+  IconButton,
+  Text,
+  Image,
+} from "@chakra-ui/react";
 
-export default function ProfileModal({user,children}) {
-    const {isOpen,onOpen,onClose}=useDisclosure();
+const ProfileModal = ({ user, children }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <span onClick={onOpen}>{children}</span>
-        
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      {children ? (
+        <span onClick={onOpen}>{children}</span>
+      ) : (
+        <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
+      )}
+      <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent h="410px">
           <ModalHeader
-          fontSize={'30px'}
-          fontFamily={'Work sans'}
-          d={'flex'}
-          justifyContent={'center'}
-          >{user.name}</ModalHeader>
+            fontSize="40px"
+            fontFamily="Work sans"
+            d="flex"
+            justifyContent="center"
+          >
+            {user.name}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            {/* <Lorem count={2} /> */}
+          <ModalBody
+            d="flex"
+            flexDir="column"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Image
-            borderRaduis={"full"}
-            boxSize={"150px"}
-            src={"https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"}
-            alt={user.name}
+              borderRadius="full"
+              boxSize="150px"
+              src={user.pic}
+              alt={user.name}
             />
-                
-                
-           <h1>Email:</h1> <span>{user.email}</span>
-           <h1>Name:</h1> <span>{user.name}</span>
-           {/* <h1>Email:</h1> <span>{user.pic}</span> */}
+            <Text
+              fontSize={{ base: "28px", md: "30px" }}
+              fontFamily="Work sans"
+            >
+              Email: {user.email}
+            </Text>
           </ModalBody>
-
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-            {/* <Button variant='ghost'>Secondary Action</Button> */}
+            <Button onClick={onClose}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
+
+export default ProfileModal;

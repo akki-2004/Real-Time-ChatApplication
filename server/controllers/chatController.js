@@ -3,29 +3,39 @@ const chatModel = require("../models/chatModel");
 const User = require("../models/userModel");
 
 const addToGroup = expressAsyncHandler(async (req, res) => {
-    const { chatId, userId } = req.body;
-  
-    // check if the requester is admin
-  
-    const added = await chatModel.findByIdAndUpdate(
-      chatId,
-      {
-        $push: { users: userId },
-      },
-      {
-        new: true,
-      }
-    )
-      .populate("users", "-password")
-      .populate("groupAdmin", "-password");
-  
-    if (!added) {
-      res.status(404);
-      throw new Error("Chat Not Found");
-    } else {
-      res.json(added);
+  const { chatId, userId } = req.body;
+
+  // Check if the requester is an admin
+  const chat = await chatModel.findById(chatId);
+
+  if (!chat) {
+    return res.status(404).json({ message: "Chat Not Found" });
+  }
+
+  if (chat.groupAdmin._id.toString() !== req.user._id.toString()) {
+    return res.status(403).json({ message: "Only admins can add users!" });
+  }
+
+  // Add the user to the group
+  const added = await chatModel.findByIdAndUpdate(
+    chatId,
+    {
+      $addToSet: { users: userId }, // Use $addToSet to avoid duplicates
+    },
+    {
+      new: true,
     }
-  });
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+  if (!added) {
+    return res.status(404).json({ message: "Chat Not Found" });
+  } else {
+    res.json(added);
+  }
+});
+
 
 const fetchChats = expressAsyncHandler(async (req, res) => {
     try {

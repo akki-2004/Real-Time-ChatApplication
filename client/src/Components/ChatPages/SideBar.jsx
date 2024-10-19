@@ -130,29 +130,7 @@ export default function SideBar() {
       </Box>
 
 
-      <Box d={"flex"} pb={2} width={'50%'}>
-      <Input
-placeholder="Search by name or email"
-mr={2}
-value={search}
-onChange={(e) =>setSearch(e.target.value)}/>
-      <Button
-       onClick={handleSearch}
-       >Go</Button>
-      </Box>
-      {loading ? (
-        <ChatLoading />
-      ) : (
-        searchResult.length > 0 && 
-        searchResult.map((user) => (
-          <UserListItem
-            key={user._id}
-            user={user}
-            handleFunction={() => accessChat(user._id)}
-          />
-        ))
-      )}
-      {loadingChat && <Spinner ml={'auto' } d={'flex'}/>}
+      
     </>
   );
 }

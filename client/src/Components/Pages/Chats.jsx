@@ -7,6 +7,7 @@ import AllChats from '../ChatPages/AllChats'
 import Chat from '../ChatPages/Chat'
 export default function Chats() {
     const {user}=ChatState()
+    const [fetchAgain, setFetchAgain] = useState(false);
   return (
     <div style={{width:"100%"}}>
         {user && <SideBar/>}
@@ -18,9 +19,11 @@ export default function Chats() {
         h="92vh"
 
         >
-            {user && <AllChats/>}
-            {user && <Chat/>}
+            {user && <AllChats fetchAgain={fetchAgain}/>}
+            {user && <Chat  fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>}
         </Box>
     </div>
+
+
   )
 }
