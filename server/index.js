@@ -6,6 +6,7 @@ const dotenv=require('dotenv');
 const connectdb =require("./config/db");
 const userRoutes= require("./routes/userRoutes")
 const chatRoutes= require("./routes/chatRoutes")
+const messageRoutes= require("./routes/messageRoutes")
 dotenv.config();
 
 connectdb();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json())
 app.use("/api/user",userRoutes);
 app.use("/api/chat",chatRoutes);
+app.use("/api/message",messageRoutes);
 app.get("/",(req,res)=>{
     res.send("Hello");
 })

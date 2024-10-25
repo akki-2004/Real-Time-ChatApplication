@@ -54,7 +54,7 @@ export default function SignUp() {
 
         try {
             // Perform the signup API call
-            const response = await axios.post('http://localhost:3924/api/user/signup', { name, email, password, pic });
+            const response = await axios.post('http://localhost:3924/api/user/', { name, email, password, pic });
 
             // Check if the response is valid
             if (response && response.data) {

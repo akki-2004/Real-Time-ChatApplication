@@ -18,7 +18,7 @@ export default function Chat({fetchAgain,setFetchAgain}) {
   >
     <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
     
-     <h1>Single HCta</h1>
+     <h1></h1>
   </Box>
   )
 }

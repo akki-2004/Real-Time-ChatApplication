@@ -38,10 +38,30 @@ export const isSameSenderMargin = (messages, m, i, userId) => {
     return i > 0 && messages[i - 1].sender._id === m.sender._id;
   };
   
-  export const getSender = (loggedUser, users) => {
-    return users[0]?._id === loggedUser?._id ? users[1].name : users[0].name;
-  };
-  
-  export const getSenderFull = (loggedUser, users) => {
-    return users[0]._id === loggedUser._id ? users[1] : users[0];
-  };
+// Function to get the name of the user who is not logged in
+export const getSender = (loggedUser, users) => {
+  // Check if inputs are valid
+  if (!loggedUser || !users || users.length < 2) {
+    return "Unknown User"; // Fallback if users array is invalid
+  }
+
+  // Find the user who is not the logged-in user
+  const otherUser = users.find(user => user._id.toString() !== loggedUser._id.toString());
+
+  // Return the other user's name or fallback
+  return otherUser ? otherUser.name : "Unknown User";
+};
+
+// Function to get the full details of the user who is not logged in
+export const getSenderFull = (loggedUser, users) => {
+  // Check if inputs are valid
+  if (!loggedUser || !users || users.length < 2) {
+    return null; // Return null if users array is invalid
+  }
+
+  // Find the user who is not the logged-in user and return their full details
+  const otherUser = users.find(user => user._id.toString() !== loggedUser._id.toString());
+
+  return otherUser || null; // Return the other user or null if not found
+};
+

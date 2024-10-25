@@ -74,7 +74,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:3924/api/chat/rename`,
+        "http://localhost:3924/api/chat/rename",
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -83,7 +83,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       );
 
       console.log(data._id);
-      // setSelectedChat("");
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
@@ -102,6 +101,10 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   };
 
   const handleAddUser = async (user1) => {
+    console.log("Selected chat:", selectedChat);
+    console.log("Group Admin:", selectedChat.groupAdmin._id); // Ensure groupAdmin is correctly assigned
+    console.log("Current User:", user._id); // Ensure current user is correctly assigned
+  
     if (selectedChat.users.find((u) => u._id === user1._id)) {
       toast({
         title: "User Already in group!",
@@ -112,8 +115,8 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       });
       return;
     }
-
-    if (selectedChat.groupAdmin._id !== user._id) {
+  
+    if (selectedChat.groupAdmin._id !== user.id) {
       toast({
         title: "Only admins can add someone!",
         status: "error",
@@ -123,7 +126,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       });
       return;
     }
-
+  
     try {
       setLoading(true);
       const config = {
@@ -139,7 +142,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
         config
       );
-
+  
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setLoading(false);
@@ -154,11 +157,11 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       });
       setLoading(false);
     }
-    setGroupChatName("");
   };
+  
 
   const handleRemove = async (user1) => {
-    if (selectedChat.groupAdmin._id !== user._id && user1._id !== user._id) {
+    if (selectedChat.groupAdmin._id !== user.id && user1._id !== user.id) {
       toast({
         title: "Only admins can remove someone!",
         status: "error",
@@ -202,7 +205,9 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
     }
     setGroupChatName("");
   };
-
+  console.log(user.id);  
+  console.log(selectedChat.groupAdmin._id);
+  console.log(selectedChat);
   return (
     <>
       <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />

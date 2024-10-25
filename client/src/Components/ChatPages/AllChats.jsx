@@ -27,6 +27,8 @@ export default function AllChats({fetchAgain}) {
       };
       const data = await axios.get("http://localhost:3924/api/chat", config);
       setChats(data.data);
+      console.log(data);
+      
     } catch (error) {
       toast({
         title: "Error Occurred!",
@@ -67,6 +69,7 @@ export default function AllChats({fetchAgain}) {
       const data = await axios.get(`http://localhost:3924/api/user?search=${search}`, config);
       setLoading(false);
       setSearchResult(data.data);
+      console.log("Searc:",data);
     } catch (error) {
       toast({
         title: "Error Occurred!",
@@ -80,37 +83,61 @@ export default function AllChats({fetchAgain}) {
     }
   };
 
-  // Access chat with a user
-  // Access chat with a user
-const accessChat = async (userId) => {
-  try {
-    setLoadingChat(true);
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
-    const { data } = await axios.post("http://localhost:3924/api/chat", { userId }, config);
-    if (!chats.find((chat) => chat._id === data._id)) setChats([data, ...chats]);
-    setSelectedChat(data);
-    setLoadingChat(false);
+  const accessChat = async (userId) => {
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+  
+      // Fetch the chat or create a new one if it doesn't exist
+      let { data } = await axios.post("http://localhost:3924/api/chat", { userId }, config);
+      
+      // Check if it is a one-on-one chat
+      if (!data.isGroupChat) {
+        // Find the user that is not the logged-in user
+        const otherUser = data.users.find(user => user._id !== logged._id);
+        if (otherUser) {
+          data.chatName = otherUser.name; // Set chatName to the other user's name
+        }
+      }
+  
+      // Check if the chat already exists in the state
+      if (!chats.find((chat) => chat._id === data._id)) {
+        setChats([data, ...chats]); // Update chats state
+      }
+  
+      setSelectedChat(data); // Set the selected chat
+      setLoadingChat(false);
+  
+      // Clear search and hide results after selecting a chat
+      setSearchResult([]); // Clears search results
+      setSearch("");       // Resets search input
+    } catch (error) {
+      toast({
+        title: "Error fetching the chat!",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+      setLoadingChat(false);
+    }
+  };
+  
+  
+  
+  
+  console.log("Searcherd",searchResult);
+  // console.log(searchedUser);
+  
+  console.log("Chat Name",chats);
 
-    // Clear search and hide results after selecting a chat
-    setSearchResult([]); // Clears search results
-    setSearch("");       // Resets search input
-  } catch (error) {
-    toast({
-      title: "Error fetching the chat!",
-      description: error.message,
-      status: "error",
-      duration: 5000,
-      isClosable: true,
-      position: "bottom-left",
-    });
-    setLoadingChat(false);
-  }
-};
+
 
 
   return (
@@ -166,10 +193,6 @@ const accessChat = async (userId) => {
     <SearchIcon />
   </Button>
 </Box>
-
-
-      {/* Display searched users */}
-    {/* Display searched users */}
 {loading ? (
   <ChatLoading />
 ) : (
@@ -198,24 +221,24 @@ const accessChat = async (userId) => {
       >
         {chats ? (
           <Stack overflowY="scroll">
-            {chats.map((chat) => (
-              <Box
-                onClick={() => setSelectedChat(chat)}
-                cursor="pointer"
-                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
-                color={selectedChat === chat ? "white" : "black"}
-                px={3}
-                py={2}
-                borderRadius="lg"
-                key={chat._id}
-              >
-                <Text>
-                  {!chat.isGroupChat
-                    ? getSender(logged, chat.users)
-                    : chat.chatName}
-                </Text>
-              </Box>
-            ))}
+           {chats.map((chat) => (
+  <Box
+    onClick={() => setSelectedChat(chat)}
+    cursor="pointer"
+    bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+    color={selectedChat === chat ? "white" : "black"}
+    px={3}
+    py={2}
+    borderRadius="lg"
+    key={chat._id}
+  >
+    <Text>
+      {chat.chatName}
+    </Text>
+  </Box>
+))}
+
+
           </Stack>
         ) : (
           <ChatLoading />
